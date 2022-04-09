@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Schools } from 'src/models/entities/school.entity';
 import { RegisteredSchools } from 'src/utils/all-schools.utils';
 import { CacheManager } from 'src/utils/cache.utils';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class SchoolService {
@@ -14,11 +13,23 @@ export class SchoolService {
     async getAllSchools() {
         try {
             const schools = await RegisteredSchools();
-            schools.map(school => school.id).forEach(async (school) => {
+            schools.forEach(async (school) => {
                 // check if school is in cache
-                const isInCache = await CacheManager.get(school);
+                const isInCache = await CacheManager.get(school.id);
                 if (!isInCache) {
-                    await CacheManager.set(school, { statistics: {}, preferences: {}, messages: {} });
+                    await CacheManager.set(school.id, {
+                        statistics: {
+                            all_teachers: 0,
+                            logged_in_teachers: [],
+                            monthly_teacher_attendance: [],
+                            teachers:{},
+                            all_learners: 0
+                        }, preferences: {
+                            theme: "light"
+                        }, messages: {
+                            chats: []
+                        }
+                    });
                 }
             });
 

@@ -23,6 +23,8 @@ import { Projects } from './models/entities/project.entity';
 import { Tasks } from './models/entities/task.entity';
 import { Users } from './models/entities/user.entity';
 import { RedisModule } from './redis/redis.module';
+import { StatisticsController } from './controllers/statistics/statistics/statistics.controller';
+import { StatisticsController } from './controllers/statistics/statistics.controller';
 
 @Module({
   imports: [
@@ -31,7 +33,7 @@ import { RedisModule } from './redis/redis.module';
     RedisModule,
     ScheduleModule.forRoot()
   ],
-  controllers: [AppController],
+  controllers: [AppController, StatisticsController],
   providers: [AppService, CoursesService,
     LearnersService,
     TeachersService,
