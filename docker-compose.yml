@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  kingsschool:
+    image: kambang/kingsschool:statistics
+    container_name: kingsschool-statistics
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - 3001:3000
+    volumes:
+      - ./:/usr/src/app
+    env_file: ./.env
+    command: npm run start:dev
