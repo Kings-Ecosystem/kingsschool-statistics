@@ -17,27 +17,23 @@ export class LearnersService {
     ) { }
 
 
-    @Cron(CronExpression.EVERY_10_SECONDS)
+    @Cron(CronExpression.EVERY_5_SECONDS)
     async getAllLearners() {
         const schools = await RegisteredSchools();
-        const all_learners = await this.users.find({ where: { userType: UserType.learner } });
-        schools.forEach(async (school) => {
+        if (schools.length > 0) {
+            const all_learners = await this.users.find({ where: { userType: UserType.learner } });
+            if (all_learners.length > 0) {
+                schools.forEach(async (school) => {
+                    // get target school learners
+                    let learners = all_learners.filter(learner => learner.school_id == school.id);
+                    // set to cache
+                    const stats = await CacheManager.get(school.id);
+                    stats.statistics.all_learners = learners.length;
+                    await CacheManager.set(school.id, stats);
 
-            // get target school learners
-            let learners = all_learners.filter(learner => learner.school_id == school.id);
-
-            // set to cache
-            const stats = await CacheManager.get(school.id);
-            stats.statistics.all_learners = learners.length;
-            await CacheManager.set(school.id, stats);
-
-        });
+                });
+            }
+        }
     }
-
-    //@Cron(CronExpression.EVERY_10_SECONDS)
-    async getActiveLearners() {
-        const active_learners = await this.users.find({ where: { userType: UserType.learner, status: "ACTIVE" } });
-    }
-
 
 }
