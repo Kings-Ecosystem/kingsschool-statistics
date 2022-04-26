@@ -4,16 +4,14 @@ WORKDIR /usr/src/app
 
 COPY ./package.json .
 
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --only=production
 
 COPY . ./
 
-RUN rm -rf dist
+# RUN rm -rf dist
 
-RUN npm run build 
+# RUN npm run build 
 
 EXPOSE 3000
 
-VOLUME [ "./:/usr/src/app" ]
-
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "start:prod" ]

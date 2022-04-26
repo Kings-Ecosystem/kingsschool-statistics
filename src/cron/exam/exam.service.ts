@@ -13,26 +13,4 @@ export class ExamService {
         private exams: Repository<Exams>
     ) { }
 
-
-    //@Cron(CronExpression.EVERY_10_SECONDS)
-    async computeTotalExams() {
-        const total_exams = await this.exams.find();
-        const statistics = this.cache().get("statistics");
-        statistics.total_exams = total_exams;
-        this.cache().set("statistics", statistics);
-        Logger.debug("Getting All Exams")
-    }
-
-    //@Cron(CronExpression.EVERY_10_SECONDS)
-    async computeAllExams() {
-        const exams = (await this.exams.find()).length;
-        const statistics = this.cache().get("statistics");
-        statistics.exams = exams;
-        this.cache().set("statistics", statistics);
-        Logger.debug("Getting All Exams")
-    }
-
-    cache() {
-        return RedisService.client;
-    }
 }
