@@ -3,6 +3,8 @@ import { RedisService } from 'src/redis/redis.service';
 export class CacheManager {
 
     static async set(key: string, data: any) {
+        console.log("Setting cache for key ", key);
+        
         try {
             const cache = RedisService.client;
             return await cache.set(key, JSON.stringify(data));
@@ -13,6 +15,7 @@ export class CacheManager {
     }
 
     static async get(key: string) {
+        console.log("Getting cache for key ", key);
         try {
             const cache = RedisService.client;
             const response = await cache.get(key);
