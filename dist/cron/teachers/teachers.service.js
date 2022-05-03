@@ -46,7 +46,7 @@ let TeachersService = class TeachersService {
         const schoolEnds = 18;
         if (loggedInTime.getDay() <= 5) {
             if (loggedInTime.getHours() >= schoolStarts && loggedInTime.getHours() <= schoolEnds) {
-                const stats = await cache_utils_1.CacheManager.get(payload.school.id.toString());
+                const stats = await cache_utils_1.CacheManager.get(payload.school_id.toString());
                 if (stats) {
                     let logged_in_teachers = ((_a = stats === null || stats === void 0 ? void 0 : stats.statistics) === null || _a === void 0 ? void 0 : _a.logged_in_teachers) ? stats.statistics.logged_in_teachers : [];
                     let isInCache = logged_in_teachers.find(teacher => teacher.id == payload.id);
@@ -59,7 +59,7 @@ let TeachersService = class TeachersService {
                         });
                     }
                     stats.statistics.logged_in_teachers = logged_in_teachers;
-                    await cache_utils_1.CacheManager.set(payload.school_id, stats);
+                    await cache_utils_1.CacheManager.set(payload.school_id.toString(), stats);
                 }
             }
         }
@@ -107,7 +107,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TeachersService.prototype, "getAllTeachers", null);
 __decorate([
-    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_10_MINUTES),
+    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_DAY_AT_MIDNIGHT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

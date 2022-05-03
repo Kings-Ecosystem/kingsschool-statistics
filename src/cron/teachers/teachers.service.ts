@@ -45,7 +45,7 @@ export class TeachersService {
         if (loggedInTime.getDay() <= 5) {
 
             if (loggedInTime.getHours() >= schoolStarts && loggedInTime.getHours() <= schoolEnds) {
-                const stats = await CacheManager.get(payload.school.id.toString());
+                const stats = await CacheManager.get(payload.school_id.toString());
                 if (stats) {
                     let logged_in_teachers = stats?.statistics?.logged_in_teachers ? stats.statistics.logged_in_teachers : [];
                     let isInCache = logged_in_teachers.find(teacher => teacher.id == payload.id);
@@ -58,14 +58,14 @@ export class TeachersService {
                         });
                     }
                     stats.statistics.logged_in_teachers = logged_in_teachers;
-                    await CacheManager.set(payload.school_id, stats);
+                    await CacheManager.set(payload.school_id.toString(), stats);
                 }
             }
         }
     }
 
     // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT) THIS IS THE CRON EXPRESSION FOR THE MIDNIGHT CRON
-    @Cron(CronExpression.EVERY_10_MINUTES)
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async resetLoggedInTeachers() {
 
         const schools = await RegisteredSchools();
