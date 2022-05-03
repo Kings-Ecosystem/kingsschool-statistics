@@ -20,7 +20,7 @@ let SchoolService = class SchoolService {
             const schools = await (0, all_schools_utils_1.RegisteredSchools)();
             if (schools.length > 0) {
                 schools.forEach(async (school) => {
-                    const isInCache = await cache_utils_1.CacheManager.get(school.id);
+                    const isInCache = await cache_utils_1.CacheManager.get(school.id.toString());
                     if (!isInCache) {
                         await cache_utils_1.CacheManager.set(school.id, {
                             statistics: {

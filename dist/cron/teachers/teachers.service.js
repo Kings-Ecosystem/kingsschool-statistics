@@ -32,7 +32,7 @@ let TeachersService = class TeachersService {
             if (all_teachers.length > 0) {
                 schools.forEach(async (school) => {
                     let teachers = all_teachers.filter(teacher => teacher.school_id == school.id);
-                    const stats = await cache_utils_1.CacheManager.get(school.id);
+                    const stats = await cache_utils_1.CacheManager.get(school.id.toString());
                     stats.statistics.all_teachers = teachers.length;
                     await cache_utils_1.CacheManager.set(school.id, stats);
                 });
@@ -46,7 +46,7 @@ let TeachersService = class TeachersService {
         const schoolEnds = 18;
         if (loggedInTime.getDay() <= 5) {
             if (loggedInTime.getHours() >= schoolStarts && loggedInTime.getHours() <= schoolEnds) {
-                const stats = await cache_utils_1.CacheManager.get(payload.school_id);
+                const stats = await cache_utils_1.CacheManager.get(payload.school.id.toString());
                 if (stats) {
                     let logged_in_teachers = ((_a = stats === null || stats === void 0 ? void 0 : stats.statistics) === null || _a === void 0 ? void 0 : _a.logged_in_teachers) ? stats.statistics.logged_in_teachers : [];
                     let isInCache = logged_in_teachers.find(teacher => teacher.id == payload.id);
@@ -70,7 +70,7 @@ let TeachersService = class TeachersService {
         if (now.getDay() <= 5) {
             schools.forEach(async (school) => {
                 var _a;
-                const stats = await cache_utils_1.CacheManager.get(school.id);
+                const stats = await cache_utils_1.CacheManager.get(school.id.toString());
                 if (stats) {
                     let loggedInTeachers = ((_a = stats === null || stats === void 0 ? void 0 : stats.statistics) === null || _a === void 0 ? void 0 : _a.logged_in_teachers) ? stats.statistics.logged_in_teachers : [];
                     let monthly_teacher_attendance = stats.statistics.monthly_teacher_attendance ? stats.statistics.monthly_teacher_attendance : [];
@@ -91,10 +91,10 @@ let TeachersService = class TeachersService {
                             monthly_teacher_attendance[index].logins.push(teacher.last_login);
                         }
                         stats.statistics.monthly_teacher_attendance = monthly_teacher_attendance;
-                        await cache_utils_1.CacheManager.set(school.id, stats);
+                        await cache_utils_1.CacheManager.set(school.id.toString(), stats);
                     });
                     stats.statistics.logged_in_teachers = [];
-                    await cache_utils_1.CacheManager.set(school.id, stats);
+                    await cache_utils_1.CacheManager.set(school.id.toString(), stats);
                 }
             });
         }

@@ -14,7 +14,7 @@ export class SchoolService {
             if (schools.length > 0) {
                 schools.forEach(async (school) => {
                     // check if school is in cache
-                    const isInCache = await CacheManager.get(school.id);
+                    const isInCache = await CacheManager.get(school.id.toString());
                     if (!isInCache) {
                         await CacheManager.set(school.id, {
                             statistics: {
