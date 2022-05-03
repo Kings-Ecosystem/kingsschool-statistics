@@ -4,6 +4,7 @@ export class CacheManager {
 
     static async set(key: string, data: any) {
         console.log("Setting cache for key ", key);
+        console.log("Setting cache for key type ", typeof key);
         
         try {
             const cache = RedisService.client;
@@ -15,7 +16,7 @@ export class CacheManager {
     }
 
     static async get(key: string) {
-        console.log("Getting cache for key ", key);
+        console.log("Getting cache for key type ", typeof key);
         try {
             const cache = RedisService.client;
             const response = await cache.get(key);

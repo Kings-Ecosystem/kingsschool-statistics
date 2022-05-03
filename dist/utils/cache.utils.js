@@ -5,6 +5,7 @@ const redis_service_1 = require("../redis/redis.service");
 class CacheManager {
     static async set(key, data) {
         console.log("Setting cache for key ", key);
+        console.log("Setting cache for key type ", typeof key);
         try {
             const cache = redis_service_1.RedisService.client;
             return await cache.set(key, JSON.stringify(data));
@@ -15,7 +16,7 @@ class CacheManager {
         }
     }
     static async get(key) {
-        console.log("Getting cache for key ", key);
+        console.log("Getting cache for key type ", typeof key);
         try {
             const cache = redis_service_1.RedisService.client;
             const response = await cache.get(key);
