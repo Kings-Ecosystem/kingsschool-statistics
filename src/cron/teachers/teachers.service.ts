@@ -27,7 +27,7 @@ export class TeachersService {
                     // get target school teachers
                     let teachers = all_teachers.filter(teacher => teacher.school_id == school.id);
                     // set to cache
-                    const stats = await CacheManager.get(school.id.toString());
+                    const stats = await CacheManager.get(school.id);
                     stats.statistics.all_teachers = teachers.length;
                     await CacheManager.set(school.id, stats);
                 });
@@ -45,7 +45,7 @@ export class TeachersService {
         if (loggedInTime.getDay() <= 5) {
 
             if (loggedInTime.getHours() >= schoolStarts && loggedInTime.getHours() <= schoolEnds) {
-                const stats = await CacheManager.get(payload.school_id.toString());
+                const stats = await CacheManager.get(payload.school_id);
                 if (stats) {
                     let logged_in_teachers = stats?.statistics?.logged_in_teachers ? stats.statistics.logged_in_teachers : [];
                     let isInCache = logged_in_teachers.find(teacher => teacher.id == payload.id);
@@ -58,7 +58,7 @@ export class TeachersService {
                         });
                     }
                     stats.statistics.logged_in_teachers = logged_in_teachers;
-                    await CacheManager.set(payload.school_id.toString(), stats);
+                    await CacheManager.set(payload.school_id, stats);
                 }
             }
         }
@@ -77,7 +77,7 @@ export class TeachersService {
 
             schools.forEach(async (school) => {
 
-                const stats = await CacheManager.get(school.id.toString());
+                const stats = await CacheManager.get(school.id);
 
                 if (stats) {
 
@@ -104,11 +104,11 @@ export class TeachersService {
                         }
                         // update cache
                         stats.statistics.monthly_teacher_attendance = monthly_teacher_attendance;
-                        await CacheManager.set(school.id.toString(), stats);
+                        await CacheManager.set(school.id, stats);
                     });
                     // reset logged in teachers
                     stats.statistics.logged_in_teachers = [];
-                    await CacheManager.set(school.id.toString(), stats);
+                    await CacheManager.set(school.id, stats);
                 }
             });
         }
