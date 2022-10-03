@@ -38,7 +38,24 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot(),
+            typeorm_1.TypeOrmModule.forRoot({
+                "type": "mysql",
+                "host": "database",
+                "port": 3306,
+                "username": "root",
+                "password": "admin",
+                "database": "kingsschool",
+                "synchronize": true,
+                "logging": false,
+                "entities": [
+                    "dist/**/*.entity{.ts,.js}"
+                ],
+                "migrationsTableName": "custom_migration_table",
+                "migrations": ["src/migration/*{.ts,.js}"],
+                "subscribers": [
+                    "src/subscriber/**/*.ts"
+                ]
+            }),
             typeorm_1.TypeOrmModule.forFeature([course_entity_1.Courses, user_entity_1.Users, classroom_entity_1.Classrooms, assignment_entity_1.Assignments, task_entity_1.Tasks, exam_entity_1.Exams, project_entity_1.Projects, academic_level_entity_1.AcademicLevels]),
             redis_module_1.RedisModule,
             schedule_1.ScheduleModule.forRoot()

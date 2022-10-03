@@ -27,7 +27,24 @@ import { StatisticsController } from './controllers/statistics/statistics.contro
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot({
+      "type": "mysql",
+      "host": "database",
+      "port": 3306,
+      "username": "root",
+      "password": "admin",
+      "database": "kingsschool",
+      "synchronize": true,
+      "logging": false,
+      "entities": [
+          "dist/**/*.entity{.ts,.js}"
+        ],
+        "migrationsTableName": "custom_migration_table",
+        "migrations":["src/migration/*{.ts,.js}"],
+      "subscribers": [
+         "src/subscriber/**/*.ts"
+      ]
+    }),
     TypeOrmModule.forFeature([Courses, Users, Classrooms, Assignments, Tasks, Exams, Projects, AcademicLevels]),
     RedisModule,
     ScheduleModule.forRoot()
